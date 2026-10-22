@@ -7,6 +7,22 @@ import { m } from "@/paraglide/messages";
 
 type Filter = "all" | MomentItem["type"];
 
+const MOMENT_TIME_ZONE = "Asia/Shanghai";
+const MONTHS = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
+
 function toDate(value: Date | string | null | undefined) {
   if (!value) return null;
   const date = value instanceof Date ? value : new Date(value);
@@ -16,25 +32,24 @@ function toDate(value: Date | string | null | undefined) {
 function formatParts(value: Date | string | null | undefined, locale: string) {
   const date = toDate(value);
   if (!date) return null;
-  const months = [
-    "JAN",
-    "FEB",
-    "MAR",
-    "APR",
-    "MAY",
-    "JUN",
-    "JUL",
-    "AUG",
-    "SEP",
-    "OCT",
-    "NOV",
-    "DEC",
-  ];
+
+  // Pin the display timezone so SSR (Workers/UTC) and the browser render the
+  // same date/time. Without this the page hydrates with a text mismatch.
+  const dateParts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: MOMENT_TIME_ZONE,
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).formatToParts(date);
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    dateParts.find((item) => item.type === type)?.value ?? "";
+
   return {
-    day: String(date.getDate()).padStart(2, "0"),
-    month: months[date.getMonth()] ?? "",
-    year: String(date.getFullYear()),
+    day: part("day"),
+    month: MONTHS[Number(part("month")) - 1] ?? "",
+    year: part("year"),
     time: new Intl.DateTimeFormat(locale, {
+      timeZone: MOMENT_TIME_ZONE,
       hour: "2-digit",
       minute: "2-digit",
     }).format(date),

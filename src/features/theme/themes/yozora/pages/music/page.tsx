@@ -1,78 +1,29 @@
-import {
-  Disc3,
-  Pause,
-  Play,
-  SkipBack,
-  SkipForward,
-} from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Disc3 } from "lucide-react";
 import type { MusicPageProps } from "@/features/theme/contract/pages";
 import type { TrackItem } from "@/features/music/tracks.schema";
+import { useMusicPlayer } from "@/features/theme/themes/yozora/components/music-player";
 import { m } from "@/paraglide/messages";
 
-function formatTime(seconds: number | null | undefined) {
-  if (!seconds || !Number.isFinite(seconds) || seconds < 0) return "0:00";
+function formatDuration(seconds: number | null | undefined) {
+  if (!seconds) return "—";
   const total = Math.floor(seconds);
-  const minutes = Math.floor(total / 60);
-  return `${minutes}:${String(total % 60).padStart(2, "0")}`;
+  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
 }
 
-function Cover({ track, large = false }: { track: TrackItem; large?: boolean }) {
-  const className = large ? "yz-music__cover yz-music__cover--large" : "yz-music__cover";
+function Cover({ track }: { track: TrackItem }) {
   return (
-    <span className={className}>
+    <span className="yz-music__cover">
       {track.cover ? (
         <img src={track.cover} alt="" loading="lazy" decoding="async" />
       ) : (
-        <Disc3 size={large ? 26 : 18} strokeWidth={1.2} aria-hidden="true" />
+        <Disc3 size={18} strokeWidth={1.2} aria-hidden="true" />
       )}
     </span>
   );
 }
 
 export function MusicPage({ tracks }: MusicPageProps) {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [current, setCurrent] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [mediaDuration, setMediaDuration] = useState(0);
-
-  const track = tracks[current];
-  const duration = useMemo(
-    () => mediaDuration || track?.duration || 0,
-    [mediaDuration, track?.duration],
-  );
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !track) return;
-    if (audio.getAttribute("src") !== track.url) {
-      audio.src = track.url;
-      audio.load();
-      setCurrentTime(0);
-      setMediaDuration(0);
-    }
-    if (playing) {
-      void audio.play().catch(() => setPlaying(false));
-    } else {
-      audio.pause();
-    }
-  }, [current, playing, track]);
-
-  const select = (index: number) => {
-    setCurrent(index);
-    setPlaying(true);
-  };
-
-  const previous = () => {
-    setCurrent((value) => (value - 1 + tracks.length) % tracks.length);
-    setPlaying(true);
-  };
-
-  const next = () => {
-    setCurrent((value) => (value + 1) % tracks.length);
-    setPlaying(true);
-  };
+  const { currentTrack, selectTrack } = useMusicPlayer();
 
   return (
     <div className="yz-music fuwari-onload-animation">
@@ -100,19 +51,20 @@ export function MusicPage({ tracks }: MusicPageProps) {
             <p>{m.music_empty()}</p>
           </div>
         ) : (
-          <>
-            <ol className="yz-music__list">
-              {tracks.map((item, index) => (
+          <ol className="yz-music__list">
+            {tracks.map((item, index) => {
+              const active = currentTrack?.id === item.id;
+              return (
                 <li key={item.id}>
                   <button
                     type="button"
-                    onClick={() => select(index)}
+                    onClick={() => selectTrack(item)}
                     className={
-                      current === index
+                      active
                         ? "yz-music__row yz-music__row--active"
                         : "yz-music__row"
                     }
-                    aria-current={current === index ? "true" : undefined}
+                    aria-current={active ? "true" : undefined}
                   >
                     <span className="yz-music__index">
                       {String(index + 1).padStart(2, "0")}
@@ -126,78 +78,13 @@ export function MusicPage({ tracks }: MusicPageProps) {
                       </span>
                     </span>
                     <span className="yz-music__duration">
-                      {formatTime(item.duration)}
+                      {formatDuration(item.duration)}
                     </span>
                   </button>
                 </li>
-              ))}
-            </ol>
-
-            <div className="yz-player">
-              <audio
-                ref={audioRef}
-                preload="metadata"
-                onLoadedMetadata={(event) => {
-                  setMediaDuration(event.currentTarget.duration || 0);
-                }}
-                onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)}
-                onPlay={() => setPlaying(true)}
-                onPause={() => setPlaying(false)}
-                onEnded={next}
-              />
-
-              <div className="yz-player__track">
-                <Cover track={track} large />
-                <div className="yz-player__text">
-                  <span className="yz-player__title">{track.title}</span>
-                  <span className="yz-player__sub">
-                    {[track.artist, track.album].filter(Boolean).join(" · ") ||
-                      m.music_unknown_artist()}
-                  </span>
-                </div>
-              </div>
-
-              <div className="yz-player__controls">
-                <button type="button" onClick={previous} aria-label={m.music_previous()}>
-                  <SkipBack size={15} strokeWidth={1.4} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPlaying((value) => !value)}
-                  aria-label={playing ? m.music_pause() : m.music_play()}
-                  className="yz-player__play"
-                >
-                  {playing ? (
-                    <Pause size={16} strokeWidth={1.5} />
-                  ) : (
-                    <Play size={16} strokeWidth={1.5} />
-                  )}
-                </button>
-                <button type="button" onClick={next} aria-label={m.music_next()}>
-                  <SkipForward size={15} strokeWidth={1.4} />
-                </button>
-              </div>
-
-              <div className="yz-player__progress">
-                <span>{formatTime(currentTime)}</span>
-                <input
-                  type="range"
-                  min={0}
-                  max={duration || 0}
-                  step={0.1}
-                  value={Math.min(currentTime, duration || 0)}
-                  onChange={(event) => {
-                    const audio = audioRef.current;
-                    const value = Number(event.target.value);
-                    setCurrentTime(value);
-                    if (audio) audio.currentTime = value;
-                  }}
-                  aria-label={m.music_progress()}
-                />
-                <span>{formatTime(duration)}</span>
-              </div>
-            </div>
-          </>
+              );
+            })}
+          </ol>
         )}
       </div>
     </div>

@@ -26,6 +26,8 @@
   "music_previous": "Previous",
   "music_next": "Next",
   "music_progress": "Playback progress",
+  "music_now_playing": "Now playing",
+  "music_close": "Close player",
   "music_admin_title": "Music",
   "music_admin_tag": "Music · Records",
   "music_admin_new": "New track",

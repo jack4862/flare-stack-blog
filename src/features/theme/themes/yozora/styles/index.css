@@ -2343,3 +2343,51 @@ article h1, article h2, article h3 {
     justify-self: end;
   }
 }
+
+/* Persistent player: fixed to the viewport, outside route children. */
+.yz-has-player {
+  padding-bottom: 6rem;
+}
+.yz-player--global {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 60;
+  margin: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+  padding-right: max(1rem, calc((100vw - var(--fuwari-page-width)) / 2 + 1rem));
+  padding-left: max(1rem, calc((100vw - var(--fuwari-page-width)) / 2 + 1rem));
+  background: var(--yz-paper);
+  box-shadow: 0 -10px 28px color-mix(in srgb, var(--yz-paper) 75%, transparent);
+}
+.yz-player__close {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.5rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--yz-ink-meta);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.yz-player__close:hover {
+  color: var(--yz-ink);
+}
+@media (max-width: 767px) {
+  .yz-has-player {
+    padding-bottom: 8rem;
+  }
+  .yz-player--global {
+    padding: 0.7rem 0.8rem 0.75rem;
+  }
+  .yz-player--global .yz-player__close {
+    top: 0.1rem;
+    right: 0.25rem;
+  }
+}

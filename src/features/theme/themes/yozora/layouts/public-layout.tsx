@@ -1,6 +1,11 @@
 import { useLocation, useRouteContext } from "@tanstack/react-router";
 import { useState } from "react";
 import type { PublicLayoutProps } from "@/features/theme/contract/layouts";
+import {
+  GlobalMusicPlayer,
+  MusicPlayerProvider,
+  useMusicPlayer,
+} from "../components/music-player";
 import { BackToTop } from "../components/control/back-to-top";
 import { Sidebar } from "../components/sidebar";
 import { Footer } from "./footer";
@@ -11,7 +16,15 @@ const BANNER_HEIGHT_PAGE = 35;
 const MAIN_OVERLAP_REM = 3.5;
 const NAVBAR_HEIGHT_REM = 4.5;
 
-export function PublicLayout({
+export function PublicLayout(props: PublicLayoutProps) {
+  return (
+    <MusicPlayerProvider>
+      <PublicLayoutBody {...props} />
+    </MusicPlayerProvider>
+  );
+}
+
+function PublicLayoutBody({
   children,
   navOptions,
   user,
@@ -20,6 +33,7 @@ export function PublicLayout({
 }: PublicLayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const { currentTrack } = useMusicPlayer();
   const isHomePage = location.pathname === "/";
   /* 目录页与首页同属"书"的语言：无横幅、无侧栏、全宽 */
   const isBookPage =
@@ -34,7 +48,7 @@ export function PublicLayout({
     <div
       className={`relative min-h-screen bg-(--fuwari-page-bg) transition-colors ${
         isBookPage ? "yz-home" : ""
-      }`}
+      } ${currentTrack ? "yz-has-player" : ""}`}
     >
       <div className="yz-progress" aria-hidden="true" />
       <MobileMenu
@@ -112,6 +126,7 @@ export function PublicLayout({
         </>
       )}
 
+      <GlobalMusicPlayer />
       <BackToTop />
     </div>
   );

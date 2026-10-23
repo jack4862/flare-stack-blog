@@ -82,6 +82,7 @@ describe("tracks schema", () => {
       duration: 24,
       url: "/audio/a.mp3",
       cover: null,
+      lyrics: null,
       sort: 0,
       createdAt: "2026-10-22T12:00:00.000Z",
       updatedAt: "2026-10-22T12:00:00.000Z",

@@ -29,7 +29,7 @@ export async function updateTrack(
   data: Partial<
     Pick<
       typeof TracksTable.$inferInsert,
-      "title" | "artist" | "album" | "duration" | "url" | "cover" | "sort"
+      "title" | "artist" | "album" | "duration" | "url" | "cover" | "lyrics" | "sort"
     >
   >,
 ) {

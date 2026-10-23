@@ -2552,3 +2552,262 @@ article h1, article h2, article h3 {
     width: 100%;
   }
 }
+
+/* Music stage: record sleeve + lyrics/playlist panel. */
+.yz-music__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+.yz-music__record,
+.yz-music__panel {
+  border: 1px solid var(--yz-rule-soft);
+  background: color-mix(in srgb, var(--yz-paper-2) 62%, transparent);
+  padding: clamp(1.2rem, 3vw, 2rem);
+}
+.yz-music__record {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.yz-music__sleeve {
+  position: relative;
+  display: flex;
+  width: min(100%, 20rem);
+  aspect-ratio: 1 / 1;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--yz-rule);
+  background:
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--yz-gold) 10%, transparent), transparent 62%),
+    var(--yz-paper-2);
+  color: var(--yz-ink-meta);
+}
+.yz-music__sleeve img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.9) contrast(0.98);
+}
+.yz-music__sleeve-disc {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: flex;
+  width: 2.6rem;
+  height: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--yz-paper) 88%, transparent);
+  color: var(--yz-ink-soft);
+  box-shadow: 0 4px 14px -6px rgba(36, 29, 42, 0.5);
+}
+.yz-music__sleeve-disc--spinning {
+  animation: yz-spin 8s linear infinite;
+}
+@keyframes yz-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.yz-music__record-meta {
+  margin-top: 1.2rem;
+}
+.yz-music__record-title {
+  color: var(--yz-ink);
+  font-family: "Noto Serif SC", "Songti SC", serif;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  font-weight: 300;
+}
+.yz-music__record-sub {
+  margin-top: 0.3rem;
+  color: var(--yz-ink-meta);
+  font-size: 0.78rem;
+}
+.yz-music__record-progress {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 1.2rem;
+  color: var(--yz-ink-meta);
+  font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
+  font-size: 0.58rem;
+  font-variant-numeric: tabular-nums;
+}
+.yz-music__record-progress input[type="range"] {
+  min-width: 0;
+  width: 100%;
+  accent-color: var(--yz-gold-text);
+}
+.yz-music__record-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+}
+.yz-music__record-controls button {
+  display: flex;
+  width: 2.3rem;
+  height: 2.3rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--yz-rule-soft);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--yz-ink-soft);
+}
+.yz-music__record-controls button:hover {
+  border-color: var(--yz-rule);
+  color: var(--yz-ink);
+}
+.yz-music__record-controls .yz-music__record-play {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-color: var(--yz-ink);
+  background: var(--yz-ink);
+  color: var(--yz-paper);
+}
+.yz-music__panel {
+  display: flex;
+  min-height: 34rem;
+  flex-direction: column;
+}
+.yz-music__tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+  padding: 0.25rem;
+  border: 1px solid var(--yz-rule-soft);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--yz-paper) 70%, transparent);
+}
+.yz-music__tabs button {
+  min-width: 6.5rem;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--yz-ink-meta);
+  font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+}
+.yz-music__tabs button.active {
+  background: var(--yz-ink);
+  color: var(--yz-paper);
+}
+.yz-music__lyrics {
+  flex: 1;
+  margin: 1.4rem 0 0;
+  padding: 0 0.5rem 1rem;
+  overflow-y: auto;
+  list-style: none;
+  max-height: 30rem;
+  scrollbar-width: thin;
+}
+.yz-music__lyric {
+  padding: 0.45rem 0;
+  color: var(--yz-ink-meta);
+  font-size: 0.84rem;
+  line-height: 1.7;
+  text-align: center;
+  transition:
+    color 0.3s,
+    transform 0.3s;
+}
+.yz-music__lyric--active {
+  color: var(--yz-gold-text);
+  font-size: 1rem;
+  transform: scale(1.02);
+}
+.yz-music__panel-empty {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  color: var(--yz-ink-meta);
+  font-size: 0.82rem;
+}
+.yz-music__playlist {
+  flex: 1;
+  margin: 1rem 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+  max-height: 30rem;
+}
+.yz-music__playlist button {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 1.5rem;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.65rem 0.5rem;
+  border: 0;
+  border-bottom: 1px solid var(--yz-rule-soft);
+  background: transparent;
+  color: var(--yz-ink);
+  text-align: left;
+}
+.yz-music__playlist button:hover,
+.yz-music__playlist button.active {
+  background: color-mix(in srgb, var(--yz-paper) 60%, transparent);
+}
+.yz-music__playlist-index {
+  color: var(--yz-ink-meta);
+  font-family: ui-monospace, "JetBrains Mono", Menlo, monospace;
+  font-size: 0.58rem;
+}
+.yz-music__playlist button.active .yz-music__playlist-index {
+  color: var(--yz-gold-text);
+}
+.yz-music__playlist-meta {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.yz-music__playlist-meta > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.84rem;
+}
+.yz-music__playlist-meta small {
+  overflow: hidden;
+  color: var(--yz-ink-meta);
+  font-size: 0.62rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.yz-music__playlist-play {
+  color: var(--yz-ink-meta);
+  font-size: 0.55rem;
+  text-align: right;
+}
+@media (max-width: 767px) {
+  .yz-music__stage {
+    grid-template-columns: 1fr;
+  }
+  .yz-music__sleeve {
+    width: min(100%, 15rem);
+  }
+  .yz-music__panel {
+    min-height: 26rem;
+  }
+  .yz-music__lyrics,
+  .yz-music__playlist {
+    max-height: 22rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .yz-music__sleeve-disc--spinning {
+    animation: none;
+  }
+}

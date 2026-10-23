@@ -62,6 +62,7 @@ export async function createTrack(
     duration: data.duration ?? null,
     url: data.url,
     cover: normalizeText(data.cover),
+    lyrics: normalizeText(data.lyrics),
     sort: data.sort,
   });
 
@@ -91,6 +92,9 @@ export async function updateTrack(
     ...(values.url !== undefined ? { url: values.url } : {}),
     ...(values.cover !== undefined
       ? { cover: normalizeText(values.cover) }
+      : {}),
+    ...(values.lyrics !== undefined
+      ? { lyrics: normalizeText(values.lyrics) }
       : {}),
     ...(values.sort !== undefined ? { sort: values.sort } : {}),
   });

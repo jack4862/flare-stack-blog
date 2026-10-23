@@ -30,6 +30,7 @@ export const CreateTrackInputSchema = z.object({
   duration: z.number().int().min(0).max(7200).nullish(),
   url: assetUrlSchema,
   cover: assetUrlSchema.nullish(),
+  lyrics: z.string().trim().max(20000).nullish(),
   sort: z.number().int().min(0).max(10000).default(0),
 });
 
@@ -41,6 +42,7 @@ export const UpdateTrackInputSchema = z.object({
   duration: z.number().int().min(0).max(7200).nullable().optional(),
   url: assetUrlSchema.optional(),
   cover: assetUrlSchema.nullable().optional(),
+  lyrics: z.string().trim().max(20000).nullable().optional(),
   sort: z.number().int().min(0).max(10000).optional(),
 });
 

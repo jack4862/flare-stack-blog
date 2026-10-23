@@ -11,6 +11,7 @@ export const TracksTable = sqliteTable(
     duration: integer(),
     url: text().notNull(),
     cover: text(),
+    lyrics: text(),
     sort: integer().notNull().default(0),
     createdAt,
     updatedAt,

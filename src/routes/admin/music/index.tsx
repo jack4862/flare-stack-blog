@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import ConfirmationModal from "@/components/ui/confirmation-modal";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   createTrackFn,
   deleteTrackFn,
@@ -34,6 +35,7 @@ type Draft = {
   album: string;
   url: string;
   cover: string;
+  lyrics: string;
   duration: string;
   sort: string;
 };
@@ -44,6 +46,7 @@ const EMPTY_DRAFT: Draft = {
   album: "",
   url: "",
   cover: "",
+  lyrics: "",
   duration: "",
   sort: "0",
 };
@@ -56,6 +59,7 @@ function toDraft(track: TrackItem): Draft {
     album: track.album ?? "",
     url: track.url,
     cover: track.cover ?? "",
+    lyrics: track.lyrics ?? "",
     duration: track.duration ? String(track.duration) : "",
     sort: String(track.sort),
   };
@@ -83,6 +87,7 @@ function MusicAdminPage() {
       album: string | null;
       url: string;
       cover: string | null;
+      lyrics: string | null;
       duration: number | null;
       sort: number;
     }) => createTrackFn({ data: input }),
@@ -102,6 +107,7 @@ function MusicAdminPage() {
       album: string | null;
       url: string;
       cover: string | null;
+      lyrics: string | null;
       duration: number | null;
       sort: number;
     }) => updateTrackFn({ data: input }),
@@ -141,6 +147,7 @@ function MusicAdminPage() {
       album: draft.album.trim() || null,
       url: draft.url.trim(),
       cover: draft.cover.trim() || null,
+      lyrics: draft.lyrics.trim() || null,
       duration: draft.duration ? Number(draft.duration) : null,
       sort: Number(draft.sort) || 0,
     };
@@ -320,6 +327,23 @@ function MusicAdminPage() {
                 }
                 className="h-9 rounded-none border-border/40 bg-background font-mono text-xs focus-visible:ring-0 focus-visible:border-foreground"
               />
+            </label>
+
+            <label className="block space-y-1.5">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+                {m.music_admin_lyrics()}
+              </span>
+              <Textarea
+                value={draft.lyrics}
+                onChange={(event) =>
+                  setDraft((current) => ({ ...current, lyrics: event.target.value }))
+                }
+                rows={5}
+                className="resize-y rounded-none border-border/40 bg-background font-mono text-xs focus-visible:ring-0 focus-visible:border-foreground"
+              />
+              <span className="block text-[10px] leading-relaxed text-muted-foreground">
+                {m.music_admin_lyrics_hint()}
+              </span>
             </label>
 
             <div className="grid grid-cols-2 gap-3">

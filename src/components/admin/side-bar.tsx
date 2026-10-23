@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
+  Disc3,
   FileText,
   Image as ImageIcon,
   LayoutDashboard,
@@ -90,6 +91,12 @@ export function SideBar({
       path: "/admin/moments",
       icon: NotebookPen,
       label: m.admin_sidebar_moments(),
+      exact: false,
+    },
+    {
+      path: "/admin/music",
+      icon: Disc3,
+      label: m.admin_sidebar_music(),
       exact: false,
     },
     {

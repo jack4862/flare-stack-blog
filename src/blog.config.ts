@@ -40,7 +40,7 @@ export const blogConfig = {
    */
   features: {
     moments: true, // 动态 / 杂谈 / 照片
-    library: false, // 音乐 / 项目 / 时光轴 / 技能树
+    library: true, // 音乐 / 项目 / 时光轴 / 技能树
     about: false, // 关于页
   },
 } as const satisfies SiteConfig;

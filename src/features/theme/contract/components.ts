@@ -9,8 +9,10 @@ import type {
   ForgotPasswordPageProps,
   FriendLinksPageProps,
   HomePageProps,
+  LibraryPageProps,
   LoginPageProps,
   MomentsPageProps,
+  MusicPageProps,
   PostPageProps,
   PostsPageProps,
   ProfilePageProps,
@@ -49,6 +51,13 @@ export interface ThemeComponents {
   /** Moments 动态页（可选；不实现的主题返回 404） */
   MomentsPage?: React.ComponentType<MomentsPageProps>;
   MomentsPageSkeleton?: React.ComponentType;
+
+  /** 书房入口（可选；不实现的主题返回 404） */
+  LibraryPage?: React.ComponentType<LibraryPageProps>;
+  LibraryPageSkeleton?: React.ComponentType;
+  /** 音乐页（可选；不实现的主题返回 404） */
+  MusicPage?: React.ComponentType<MusicPageProps>;
+  MusicPageSkeleton?: React.ComponentType;
 
   /** 文章详情页组件 */
   PostPage: React.ComponentType<PostPageProps>;

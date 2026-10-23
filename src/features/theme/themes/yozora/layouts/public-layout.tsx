@@ -25,7 +25,9 @@ export function PublicLayout({
   const isBookPage =
     isHomePage ||
     location.pathname === "/posts" ||
-    location.pathname === "/moments";
+    location.pathname === "/moments" ||
+    location.pathname === "/library" ||
+    location.pathname.startsWith("/library/");
   const bannerHeightVh = isBookPage ? 100 : BANNER_HEIGHT_PAGE;
 
   return (

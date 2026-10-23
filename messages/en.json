@@ -28,6 +28,8 @@
   "music_progress": "Playback progress",
   "music_now_playing": "Now playing",
   "music_close": "Close player",
+  "home_music_label": "Music · Records",
+  "home_music_open": "Record shelf",
   "music_admin_title": "Music",
   "music_admin_tag": "Music · Records",
   "music_admin_new": "New track",

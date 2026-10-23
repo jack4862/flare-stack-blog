@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { AUTH_KEYS } from "@/features/auth/queries";
 import { isFeatureEnabled } from "@/features/config/features";
+import { tracksQuery } from "@/features/music/queries";
 import { getThemePreloadImages } from "@/features/theme/site-config.helpers";
 import { authClient } from "@/lib/auth/auth.client";
 import { getLogoutAuthErrorMessage } from "@/lib/auth/auth-errors";
@@ -17,9 +18,17 @@ import { CACHE_CONTROL } from "@/lib/constants";
 import { m } from "@/paraglide/messages";
 
 export const Route = createFileRoute("/_public")({
-  loader: ({ context }) => ({
-    preloadImages: getThemePreloadImages(context.siteConfig),
-  }),
+  loader: async ({ context }) => {
+    // The persistent player lives in PublicLayout; preload its queue so the
+    // home music card has the same data on the first paint as after hydration.
+    if (isFeatureEnabled(context.siteConfig, "library")) {
+      await context.queryClient.ensureQueryData(tracksQuery());
+    }
+
+    return {
+      preloadImages: getThemePreloadImages(context.siteConfig),
+    };
+  },
   component: PublicLayout,
   headers: () => {
     return CACHE_CONTROL.public;

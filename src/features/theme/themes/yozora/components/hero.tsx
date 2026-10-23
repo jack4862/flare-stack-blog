@@ -1,5 +1,6 @@
 import { Link, useRouteContext } from "@tanstack/react-router";
 import { m } from "@/paraglide/messages";
+import { HomeMusicCard } from "../pages/home/home-music-card";
 
 /**
  * 首页 Hero：纸与光（对齐 proto-v9）。
@@ -52,10 +53,13 @@ export function Hero() {
           </div>
         </div>
 
-        <figure className="yz-hero__photo">
-          <img src="/images/yozora/still.jpg" alt="" loading="lazy" />
-          <figcaption>no.04 — ribbon &amp; coffee</figcaption>
-        </figure>
+        <div className="yz-hero__aside">
+          <figure className="yz-hero__photo">
+            <img src="/images/yozora/still.jpg" alt="" loading="lazy" />
+            <figcaption>no.04 — ribbon &amp; coffee</figcaption>
+          </figure>
+          <HomeMusicCard />
+        </div>
       </div>
     </section>
   );

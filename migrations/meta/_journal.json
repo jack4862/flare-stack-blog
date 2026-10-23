@@ -85,6 +85,20 @@
       "when": 1792684641017,
       "tag": "0011_large_rumiko_fujikawa",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1792736007520,
+      "tag": "0012_brief_maginty",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1792746018662,
+      "tag": "0013_dear_baron_zemo",
+      "breakpoints": true
     }
   ]
 }

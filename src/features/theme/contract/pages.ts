@@ -10,8 +10,10 @@
 export type * from "./pages/forgot-password";
 export type * from "./pages/friend-links";
 export type * from "./pages/home";
+export type * from "./pages/library";
 export type * from "./pages/login";
 export type * from "./pages/moments";
+export type * from "./pages/music";
 export type * from "./pages/post";
 export type * from "./pages/posts";
 export type * from "./pages/profile";

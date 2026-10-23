@@ -34,11 +34,13 @@ import { Route as AdminPostsRouteRouteImport } from './routes/admin/posts/route'
 import { Route as AdminTagsIndexRouteImport } from './routes/admin/tags/index'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin/settings/index'
 import { Route as AdminPostsIndexRouteImport } from './routes/admin/posts/index'
+import { Route as AdminMusicIndexRouteImport } from './routes/admin/music/index'
 import { Route as AdminMomentsIndexRouteImport } from './routes/admin/moments/index'
 import { Route as AdminMediaIndexRouteImport } from './routes/admin/media/index'
 import { Route as AdminFriendLinksIndexRouteImport } from './routes/admin/friend-links/index'
 import { Route as AdminCommentsIndexRouteImport } from './routes/admin/comments/index'
 import { Route as PublicPostSlugRouteImport } from './routes/_public/post/$slug'
+import { Route as PublicLibraryMusicRouteImport } from './routes/_public/library.music'
 import { Route as AdminPostsEditIdRouteImport } from './routes/admin/posts/edit.$id'
 
 const AdminRouteRoute = AdminRouteRouteImport.update({
@@ -163,6 +165,11 @@ const AdminPostsIndexRoute = AdminPostsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminPostsRouteRoute,
 } as any)
+const AdminMusicIndexRoute = AdminMusicIndexRouteImport.update({
+  id: '/music/',
+  path: '/music/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AdminMomentsIndexRoute = AdminMomentsIndexRouteImport.update({
   id: '/moments/',
   path: '/moments/',
@@ -188,6 +195,11 @@ const PublicPostSlugRoute = PublicPostSlugRouteImport.update({
   path: '/post/$slug',
   getParentRoute: () => PublicRouteRoute,
 } as any)
+const PublicLibraryMusicRoute = PublicLibraryMusicRouteImport.update({
+  id: '/music',
+  path: '/music',
+  getParentRoute: () => PublicLibraryRoute,
+} as any)
 const AdminPostsEditIdRoute = AdminPostsEditIdRouteImport.update({
   id: '/edit/$id',
   path: '/edit/$id',
@@ -205,7 +217,7 @@ export interface FileRoutesByFullPath {
   '/verify-email': typeof AuthVerifyEmailRoute
   '/about': typeof PublicAboutRoute
   '/friend-links': typeof PublicFriendLinksRoute
-  '/library': typeof PublicLibraryRoute
+  '/library': typeof PublicLibraryRouteWithChildren
   '/moments': typeof PublicMomentsRoute
   '/posts': typeof PublicPostsRoute
   '/search': typeof PublicSearchRoute
@@ -214,11 +226,13 @@ export interface FileRoutesByFullPath {
   '/submit-friend-link': typeof UserSubmitFriendLinkRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/admin/': typeof AdminIndexRoute
+  '/library/music': typeof PublicLibraryMusicRoute
   '/post/$slug': typeof PublicPostSlugRoute
   '/admin/comments/': typeof AdminCommentsIndexRoute
   '/admin/friend-links/': typeof AdminFriendLinksIndexRoute
   '/admin/media/': typeof AdminMediaIndexRoute
   '/admin/moments/': typeof AdminMomentsIndexRoute
+  '/admin/music/': typeof AdminMusicIndexRoute
   '/admin/posts/': typeof AdminPostsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/tags/': typeof AdminTagsIndexRoute
@@ -233,7 +247,7 @@ export interface FileRoutesByTo {
   '/verify-email': typeof AuthVerifyEmailRoute
   '/about': typeof PublicAboutRoute
   '/friend-links': typeof PublicFriendLinksRoute
-  '/library': typeof PublicLibraryRoute
+  '/library': typeof PublicLibraryRouteWithChildren
   '/moments': typeof PublicMomentsRoute
   '/posts': typeof PublicPostsRoute
   '/search': typeof PublicSearchRoute
@@ -242,11 +256,13 @@ export interface FileRoutesByTo {
   '/submit-friend-link': typeof UserSubmitFriendLinkRoute
   '/oauth/consent': typeof OauthConsentRoute
   '/admin': typeof AdminIndexRoute
+  '/library/music': typeof PublicLibraryMusicRoute
   '/post/$slug': typeof PublicPostSlugRoute
   '/admin/comments': typeof AdminCommentsIndexRoute
   '/admin/friend-links': typeof AdminFriendLinksIndexRoute
   '/admin/media': typeof AdminMediaIndexRoute
   '/admin/moments': typeof AdminMomentsIndexRoute
+  '/admin/music': typeof AdminMusicIndexRoute
   '/admin/posts': typeof AdminPostsIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
   '/admin/tags': typeof AdminTagsIndexRoute
@@ -266,7 +282,7 @@ export interface FileRoutesById {
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_public/about': typeof PublicAboutRoute
   '/_public/friend-links': typeof PublicFriendLinksRoute
-  '/_public/library': typeof PublicLibraryRoute
+  '/_public/library': typeof PublicLibraryRouteWithChildren
   '/_public/moments': typeof PublicMomentsRoute
   '/_public/posts': typeof PublicPostsRoute
   '/_public/search': typeof PublicSearchRoute
@@ -276,11 +292,13 @@ export interface FileRoutesById {
   '/oauth/consent': typeof OauthConsentRoute
   '/_public/': typeof PublicIndexRoute
   '/admin/': typeof AdminIndexRoute
+  '/_public/library/music': typeof PublicLibraryMusicRoute
   '/_public/post/$slug': typeof PublicPostSlugRoute
   '/admin/comments/': typeof AdminCommentsIndexRoute
   '/admin/friend-links/': typeof AdminFriendLinksIndexRoute
   '/admin/media/': typeof AdminMediaIndexRoute
   '/admin/moments/': typeof AdminMomentsIndexRoute
+  '/admin/music/': typeof AdminMusicIndexRoute
   '/admin/posts/': typeof AdminPostsIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/admin/tags/': typeof AdminTagsIndexRoute
@@ -308,11 +326,13 @@ export interface FileRouteTypes {
     | '/submit-friend-link'
     | '/oauth/consent'
     | '/admin/'
+    | '/library/music'
     | '/post/$slug'
     | '/admin/comments/'
     | '/admin/friend-links/'
     | '/admin/media/'
     | '/admin/moments/'
+    | '/admin/music/'
     | '/admin/posts/'
     | '/admin/settings/'
     | '/admin/tags/'
@@ -336,11 +356,13 @@ export interface FileRouteTypes {
     | '/submit-friend-link'
     | '/oauth/consent'
     | '/admin'
+    | '/library/music'
     | '/post/$slug'
     | '/admin/comments'
     | '/admin/friend-links'
     | '/admin/media'
     | '/admin/moments'
+    | '/admin/music'
     | '/admin/posts'
     | '/admin/settings'
     | '/admin/tags'
@@ -369,11 +391,13 @@ export interface FileRouteTypes {
     | '/oauth/consent'
     | '/_public/'
     | '/admin/'
+    | '/_public/library/music'
     | '/_public/post/$slug'
     | '/admin/comments/'
     | '/admin/friend-links/'
     | '/admin/media/'
     | '/admin/moments/'
+    | '/admin/music/'
     | '/admin/posts/'
     | '/admin/settings/'
     | '/admin/tags/'
@@ -565,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminPostsIndexRouteImport
       parentRoute: typeof AdminPostsRouteRoute
     }
+    '/admin/music/': {
+      id: '/admin/music/'
+      path: '/music'
+      fullPath: '/admin/music/'
+      preLoaderRoute: typeof AdminMusicIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/moments/': {
       id: '/admin/moments/'
       path: '/moments'
@@ -600,6 +631,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicPostSlugRouteImport
       parentRoute: typeof PublicRouteRoute
     }
+    '/_public/library/music': {
+      id: '/_public/library/music'
+      path: '/music'
+      fullPath: '/library/music'
+      preLoaderRoute: typeof PublicLibraryMusicRouteImport
+      parentRoute: typeof PublicLibraryRoute
+    }
     '/admin/posts/edit/$id': {
       id: '/admin/posts/edit/$id'
       path: '/edit/$id'
@@ -630,10 +668,22 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
+interface PublicLibraryRouteChildren {
+  PublicLibraryMusicRoute: typeof PublicLibraryMusicRoute
+}
+
+const PublicLibraryRouteChildren: PublicLibraryRouteChildren = {
+  PublicLibraryMusicRoute: PublicLibraryMusicRoute,
+}
+
+const PublicLibraryRouteWithChildren = PublicLibraryRoute._addFileChildren(
+  PublicLibraryRouteChildren,
+)
+
 interface PublicRouteRouteChildren {
   PublicAboutRoute: typeof PublicAboutRoute
   PublicFriendLinksRoute: typeof PublicFriendLinksRoute
-  PublicLibraryRoute: typeof PublicLibraryRoute
+  PublicLibraryRoute: typeof PublicLibraryRouteWithChildren
   PublicMomentsRoute: typeof PublicMomentsRoute
   PublicPostsRoute: typeof PublicPostsRoute
   PublicSearchRoute: typeof PublicSearchRoute
@@ -645,7 +695,7 @@ interface PublicRouteRouteChildren {
 const PublicRouteRouteChildren: PublicRouteRouteChildren = {
   PublicAboutRoute: PublicAboutRoute,
   PublicFriendLinksRoute: PublicFriendLinksRoute,
-  PublicLibraryRoute: PublicLibraryRoute,
+  PublicLibraryRoute: PublicLibraryRouteWithChildren,
   PublicMomentsRoute: PublicMomentsRoute,
   PublicPostsRoute: PublicPostsRoute,
   PublicSearchRoute: PublicSearchRoute,
@@ -693,6 +743,7 @@ interface AdminRouteRouteChildren {
   AdminFriendLinksIndexRoute: typeof AdminFriendLinksIndexRoute
   AdminMediaIndexRoute: typeof AdminMediaIndexRoute
   AdminMomentsIndexRoute: typeof AdminMomentsIndexRoute
+  AdminMusicIndexRoute: typeof AdminMusicIndexRoute
   AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
   AdminTagsIndexRoute: typeof AdminTagsIndexRoute
 }
@@ -704,6 +755,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminFriendLinksIndexRoute: AdminFriendLinksIndexRoute,
   AdminMediaIndexRoute: AdminMediaIndexRoute,
   AdminMomentsIndexRoute: AdminMomentsIndexRoute,
+  AdminMusicIndexRoute: AdminMusicIndexRoute,
   AdminSettingsIndexRoute: AdminSettingsIndexRoute,
   AdminTagsIndexRoute: AdminTagsIndexRoute,
 }
